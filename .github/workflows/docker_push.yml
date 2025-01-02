@@ -40,17 +40,19 @@
 
         - name: Build Docker image
           run: |-
-            docker build -t kiran11113/${{env.app_name}}:${{ steps.get-tag.outputs.tag }} .
+             docker build -t 127214183072.dkr.ecr.us-east-1.amazonaws.com/nginxapp:${{ steps.get-tag.outputs.tag }} .
 
-        - name: Log in to Docker Hub
-          uses: docker/login-action@v2
+        - name: Configure AWS credentials
+          uses: aws-actions/configure-aws-credentials@v4
           with:
-            username: ${{ secrets.DOCKER_USERNAME }}
-            password: ${{ secrets.DOCKER_PASSWORD }}
+            aws-region: "us-east-1"
+              username: ${{ secrets.AWS_ACCESS_KEY }}
+              password: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
         - name: Push Docker image
           run: |-
-            docker push kiran11113/${{env.app_name}}:${{ steps.get-tag.outputs.tag }}
+            docker push 127214183072.dkr.ecr.us-east-1.amazonaws.com/nginxapp:${{ steps.get-tag.outputs.tag }}
+          #docker push kiran11113/${{env.app_name}}:${{ steps.get-tag.outputs.tag }}
 
 
 
@@ -63,4 +65,44 @@
         #     tags: yourdockerhubusername/your-repo-name:latest
 
         # # Optionally you can add more tags
-        # #- tags: yourdockerhubusername/your-repo-name:${{ github.sha }}
+        # # #- tags: yourdockerhubusername/your-repo-name:${{ github.sha }}
+
+
+        # name: Build and Push Docker Image
+
+        # on:
+        #   push:
+        #     branches:
+        #       - main  # Change this to your default branch if it's not 'main'
+
+        # env:
+        #   app_name: my-nginx
+
+        # jobs:
+        #   build:
+        #     runs-on: ubuntu-latest
+
+        #     steps:
+        #     - name: Checkout code
+        #       uses: actions/checkout@v3
+
+        #     - id: get-tag
+        #       name: Generate release tag
+        #       run: |
+        #        RELEASE_TAG=$(date --utc +%Y-%m-%dT%H%M)
+        #        echo "tag=$RELEASE_TAG" >> $GITHUB_OUTPUT
+
+        #     - name: Build Docker image
+        #       run: |-
+        #         docker build -t kiran11113/${{env.app_name}}:${{ steps.get-tag.outputs.tag }} .
+
+        #     - name: Log in to Docker Hub
+        #       uses: docker/login-action@v2
+        #       with:
+        #         username: ${{ secrets.DOCKER_USERNAME }}
+        #         password: ${{ secrets.DOCKER_PASSWORD }}
+
+        #     - name: Push Docker image
+        #       run: |-
+        #         docker push kiran11113/${{env.app_name}}:${{ steps.get-tag.outputs.tag }}
+
