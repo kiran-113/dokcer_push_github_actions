@@ -52,18 +52,23 @@
             aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
             aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-        - name: Log in to Amazon ECR
+        - name: Log in ecr
+          id: login-ecr
           uses: aws-actions/amazon-ecr-login@v2
 
         - name: Build Docker image
+          env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+
           run: |-
              docker build -t 127214183072.dkr.ecr.eu-west-2.amazonaws.com/my-dockerrepo/nginxapp:${{ steps.get-tag.outputs.tag }} .
 
-        - name: Log in ecr
-          uses: aws-actions/amazon-ecr-login@v2
+
 
 
         - name: Push Docker image
+          env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           run: |-
             docker push 127214183072.dkr.ecr.eu-west-2.amazonaws.com/my-dockerrepo/nginxapp:${{ steps.get-tag.outputs.tag }}
 
