@@ -58,7 +58,7 @@
 
         - name: Build Docker image
           env:
-          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+            REGISTRY: ${{ steps.login-ecr.outputs.registry }}
 
           run: |-
              docker build -t 127214183072.dkr.ecr.eu-west-2.amazonaws.com/my-dockerrepo/nginxapp:${{ steps.get-tag.outputs.tag }} .
@@ -68,7 +68,7 @@
 
         - name: Push Docker image
           env:
-          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+            REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           run: |-
             docker push 127214183072.dkr.ecr.eu-west-2.amazonaws.com/my-dockerrepo/nginxapp:${{ steps.get-tag.outputs.tag }}
 
