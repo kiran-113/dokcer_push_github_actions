@@ -28,7 +28,7 @@
     #       types: [closed]
 
     env:
-      app_name: my-nginx
+      app_name: my-dockerrepo
 
     jobs:
       build:
