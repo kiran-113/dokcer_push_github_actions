@@ -59,11 +59,14 @@
           run: |-
              docker build -t 127214183072.dkr.ecr.eu-west-2.amazonaws.com/my-dockerrepo/nginxapp:${{ steps.get-tag.outputs.tag }} .
 
+        - name: Log in ecr
+          uses: aws-actions/amazon-ecr-login@v2
+
 
         - name: Push Docker image
           run: |-
             docker push 127214183072.dkr.ecr.eu-west-2.amazonaws.com/my-dockerrepo/nginxapp:${{ steps.get-tag.outputs.tag }}
-          #docker push kiran11113/${{env.app_name}}:${{ steps.get-tag.outputs.tag }}
+
 
 
 
