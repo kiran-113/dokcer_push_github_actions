@@ -2,36 +2,36 @@ name: Build and Push Docker Image
 
 on:
   push:
-  branches:
-    - docker # Change this to your default branch if it's not 'main'
+    branches:
+        - docker # Change this to your default branch if it's not 'main'
 
 env:
-app_name: docker-nginx
+    app_name: docker-nginx
 
 jobs:
   build:
-  runs-on: ubuntu-latest
+    runs-on: ubuntu-latest
 
-  steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - id: get-tag
-      name: Generate release tag
-      run: |
-        RELEASE_TAG=$(date --utc +%Y-%m-%dT%H%M)
-        echo "tag=$RELEASE_TAG" >> $GITHUB_OUTPUT
+      - id: get-tag
+        name: Generate release tag
+        run: |
+            RELEASE_TAG=$(date --utc +%Y-%m-%dT%H%M)
+            echo "tag=$RELEASE_TAG" >> $GITHUB_OUTPUT
 
-    - name: Build Docker image
-      run: |-
-        docker build -t kiran11113/${{env.app_name}}:${{ steps.get-tag.outputs.tag }} .
+      - name: Build Docker image
+        run: |-
+            docker build -t kiran11113/${{env.app_name}}:${{ steps.get-tag.outputs.tag }} .
 
-    - name: Log in to Docker Hub
-      uses: docker/login-action@v3
-      with:
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+            username: ${{ secrets.DOCKER_USERNAME }}
+            password: ${{ secrets.DOCKER_PASSWORD }}
 
-    - name: Push Docker image
-      run: |-
-        docker push kiran11113/${{env.app_name}}:${{ steps.get-tag.outputs.tag }}
+      - name: Push Docker image
+        run: |-
+            docker push kiran11113/${{env.app_name}}:${{ steps.get-tag.outputs.tag }}
